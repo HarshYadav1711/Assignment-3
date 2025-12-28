@@ -30,20 +30,24 @@ The platform maintains a clear separation between original and updated content, 
 
 ## Quick Start
 
-**TL;DR:** Run the API, then the frontend, then the automation pipeline.
+**TL;DR:** Set up environment files, then run the API, frontend, and automation.
 
 ```bash
-# Terminal 1: Start API
+# 1. Create environment files
+node setup-env.js
+
+# 2. Terminal 1: Start API
 cd apps/api && npm install && npm start
 
-# Terminal 2: Start Frontend  
+# 3. Terminal 2: Start Frontend  
 cd apps/frontend && npm install && npm run dev
 
-# Terminal 3: Run Automation
+# 4. Terminal 3: Run Automation
 cd scripts/automation && npm install && npm run update
 ```
 
-See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions.
+See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions.  
+See [SETUP_ENV.md](SETUP_ENV.md) for environment variable configuration.
 
 ## Local Setup
 

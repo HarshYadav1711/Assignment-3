@@ -6,6 +6,17 @@
 - (Optional) Google Custom Search API credentials
 - (Optional) OpenAI or Anthropic API key for LLM features
 
+## Quick Environment Setup
+
+**Option 1: Use the setup script (Recommended)**
+```bash
+node setup-env.js
+```
+This will create all `.env.local` files with default values.
+
+**Option 2: Manual setup**
+See [SETUP_ENV.md](SETUP_ENV.md) for detailed instructions.
+
 ## Running the Project
 
 ### Option 1: Run All Services (Recommended)
