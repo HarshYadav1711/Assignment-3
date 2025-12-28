@@ -1,0 +1,26 @@
+{
+  "name": "@assignment/automation",
+  "version": "1.0.0",
+  "description": "Automation scripts for web scraping, Google search, and LLM-based article updates",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "scrape": "node src/index.js scrape"
+  },
+  "keywords": [
+    "scraping",
+    "automation",
+    "articles"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
+
