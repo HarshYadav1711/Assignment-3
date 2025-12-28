@@ -4,6 +4,8 @@
  */
 
 import { scrapeOldestArticles } from './scrapers/blogScraper.js';
+import { extractArticleContent } from './scrapers/articleContentExtractor.js';
+import { searchForArticle, structureResultsForScraping } from './services/googleSearch.js';
 import { logger } from './utils/logger.js';
 import { ScraperError, HttpError, ParseError } from './utils/errors.js';
 
@@ -38,9 +40,58 @@ async function main() {
         // Return articles for programmatic use
         return articles;
         
+      case 'search':
+        const searchTitle = process.argv[3];
+        if (!searchTitle) {
+          logger.error('Please provide an article title to search for');
+          logger.info('Usage: node src/index.js search "Article Title"');
+          process.exit(1);
+        }
+        
+        logger.info(`Searching Google for: "${searchTitle}"`);
+        const searchResults = await searchForArticle(searchTitle, {
+          minResults: 2,
+          maxAttempts: 3
+        });
+        
+        logger.info(`\n=== Search Results (${searchResults.length} found) ===`);
+        const structured = structureResultsForScraping(searchResults);
+        structured.forEach((result) => {
+          console.log(`\n${result.rank}. ${result.title}`);
+          console.log(`   URL: ${result.url}`);
+          console.log(`   Domain: ${result.domain}`);
+          console.log(`   Snippet: ${result.snippet.substring(0, 100)}...`);
+          console.log(`   Reason: ${result.metadata.reason}`);
+        });
+        
+        return structured;
+        
+      case 'extract':
+        const articleUrl = process.argv[3];
+        if (!articleUrl) {
+          logger.error('Please provide an article URL to extract content from');
+          logger.info('Usage: node src/index.js extract "https://example.com/article"');
+          process.exit(1);
+        }
+        
+        logger.info(`Extracting content from: ${articleUrl}`);
+        const extracted = await extractArticleContent(articleUrl);
+        
+        logger.info(`\n=== Extracted Content ===`);
+        console.log(`\nTitle: ${extracted.title}`);
+        console.log(`URL: ${extracted.url}`);
+        console.log(`Content Length: ${extracted.contentLength} characters`);
+        console.log(`Extracted At: ${extracted.extractedAt}`);
+        console.log(`\n--- Content Preview (first 500 chars) ---`);
+        console.log(extracted.content.substring(0, 500) + '...');
+        console.log(`\n--- Full Content ---`);
+        console.log(extracted.content);
+        
+        return extracted;
+        
       default:
         logger.warn(`Unknown command: ${command}`);
-        logger.info('Available commands: scrape');
+        logger.info('Available commands: scrape, search, extract');
         process.exit(1);
     }
   } catch (error) {
@@ -66,4 +117,6 @@ main().catch(error => {
 });
 
 export { scrapeOldestArticles };
+export { extractArticleContent } from './scrapers/articleContentExtractor.js';
+export { searchForArticle, structureResultsForScraping } from './services/googleSearch.js';
 

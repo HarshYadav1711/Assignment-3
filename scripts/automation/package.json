@@ -6,7 +6,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "scrape": "node src/index.js scrape"
+    "scrape": "node src/index.js scrape",
+    "search": "node src/index.js search",
+    "extract": "node src/index.js extract"
   },
   "keywords": [
     "scraping",

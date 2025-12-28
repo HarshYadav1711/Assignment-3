@@ -2,6 +2,120 @@
 
 This package contains automation scripts for web scraping, Google search integration, and LLM-based article updates.
 
+## Google Search Service
+
+The Google search service finds relevant blog/article pages for a given article title.
+
+### Features
+
+- **Google Custom Search API**: Uses official API for reliable results
+- **Web Scraping Fallback**: Falls back to scraping if API unavailable
+- **Intelligent Filtering**: Filters out ads, non-article pages, and excluded domains
+- **Query Expansion**: Automatically tries query variations if insufficient results
+- **Deterministic Logic**: Clear, explainable filtering rules
+
+### Usage
+
+#### Command Line
+
+```bash
+npm run search "Article Title"
+# or
+node src/index.js search "Article Title"
+```
+
+#### Programmatic
+
+```javascript
+import { searchForArticle, structureResultsForScraping } from './services/googleSearch.js';
+
+const results = await searchForArticle('Getting Started with Node.js', {
+  minResults: 2,
+  maxAttempts: 3
+});
+
+const structured = structureResultsForScraping(results);
+```
+
+### Configuration
+
+Set up Google Custom Search API credentials in `.env.local`:
+
+```env
+GOOGLE_API_KEY=your-api-key
+GOOGLE_SEARCH_ENGINE_ID=your-search-engine-id
+```
+
+See `src/services/README.md` for detailed documentation.
+
+## Article Content Extractor
+
+The article content extractor extracts clean, readable content from any blog/article URL.
+
+### Features
+
+- **Multi-Strategy Extraction**: Uses 4 different strategies to find main content
+- **Content Cleaning**: Removes navigation, ads, social widgets, and other noise
+- **Resilient**: Works with various website structures and CMS platforms
+- **Text Normalization**: Returns clean, well-formatted plain text
+- **LLM-Ready**: Output is optimized for LLM input
+
+### Usage
+
+#### Command Line
+
+```bash
+npm run extract "https://example.com/blog/article"
+# or
+node src/index.js extract "https://example.com/blog/article"
+```
+
+#### Programmatic
+
+```javascript
+import { extractArticleContent } from './scrapers/articleContentExtractor.js';
+
+const result = await extractArticleContent('https://example.com/blog/article');
+console.log(result.content);
+```
+
+### Output Format
+
+```javascript
+{
+  title: "Article Title",
+  content: "Clean, readable article content...",
+  url: "https://example.com/blog/article",
+  contentLength: 5000,
+  extractedAt: "2024-01-15T10:30:00.000Z"
+}
+```
+
+### Extraction Strategy
+
+The extractor uses a multi-strategy approach:
+
+1. **Semantic HTML5**: Looks for `<article>`, `<main>`, or `[role="article"]` tags
+2. **Class Patterns**: Searches for common class names (`.article-content`, `.post-content`, etc.)
+3. **Content Scoring**: Scores all potential containers using heuristics
+4. **Size Fallback**: Selects the largest text container as last resort
+
+After finding content, it removes:
+- Navigation elements
+- Ads and promotional content
+- Social media widgets
+- Comments sections
+- Related content sections
+- Forms and newsletter signups
+- Hidden elements
+
+### Error Handling
+
+The extractor includes comprehensive error handling:
+- **HttpError**: Network or HTTP errors
+- **ParseError**: Content extraction failures
+- **ScraperError**: General scraping errors
+
 ## Blog Scraper
 
 The blog scraper fetches the 5 oldest articles from https://beyondchats.com/blogs/
