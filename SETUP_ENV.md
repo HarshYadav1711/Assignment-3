@@ -80,14 +80,16 @@ LLM_PROVIDER=openai
 
 ### Google Custom Search API (Optional)
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a project or select existing
-3. Enable "Custom Search API"
-4. Create credentials (API Key)
-5. Create a Custom Search Engine at [Google Programmable Search](https://programmablesearchengine.google.com/)
-6. Get your Search Engine ID
+See [docs/GOOGLE_API_SETUP.md](docs/GOOGLE_API_SETUP.md) for detailed step-by-step instructions.
 
-**Note:** Free tier allows 100 queries/day
+**Quick summary:**
+1. Create a Google Cloud project
+2. Enable Custom Search API
+3. Create an API key
+4. Create a Custom Search Engine
+5. Get your Search Engine ID
+
+**Note:** Free tier allows 100 queries/day. See the detailed guide for troubleshooting and best practices.
 
 ### OpenAI API Key (Required for LLM)
 
