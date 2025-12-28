@@ -145,17 +145,53 @@ Once all services are running:
 
 ## Architecture & Data Flow
 
-### Monorepo Structure
+### System Architecture
 
+```mermaid
+graph TB
+    subgraph "External Sources"
+        BC[BeyondChats Blog]
+        Google[Google Search]
+        LLM_API[LLM API]
+    end
+
+    subgraph "Automation Pipeline"
+        Scraper[Blog Scraper]
+        Search[Google Search Service]
+        Extractor[Content Extractor]
+        LLM_Service[LLM Service]
+        Processor[Update Processor]
+        API_Client[API Client]
+    end
+
+    subgraph "Backend API"
+        API[Express API]
+        Storage[(Article Storage)]
+    end
+
+    subgraph "Frontend"
+        React[React App]
+    end
+
+    BC -->|Scrape| Scraper
+    Scraper -->|Article Data| Processor
+    Processor -->|Search| Search
+    Search -->|Query| Google
+    Google -->|Results| Search
+    Search -->|URLs| Extractor
+    Extractor -->|Content| Processor
+    Processor -->|Original + Refs| LLM_Service
+    LLM_Service -->|Request| LLM_API
+    LLM_API -->|Improved| LLM_Service
+    LLM_Service -->|Content| Processor
+    Processor -->|Data| API_Client
+    API_Client -->|HTTP| API
+    API -->|Store| Storage
+    React -->|Fetch| API
+    API -->|Data| React
 ```
-assignment-3/
-├── apps/
-│   ├── api/              # REST API for article CRUD
-│   └── frontend/         # React frontend for review
-├── scripts/
-│   └── automation/       # Scraping, search, LLM pipeline
-└── docs/                  # Documentation
-```
+
+See `docs/architecture.md` for detailed architecture documentation.
 
 ### Data Flow
 
