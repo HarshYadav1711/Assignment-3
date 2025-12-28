@@ -37,7 +37,9 @@ cd apps/frontend
 npm install
 npm run dev
 ```
-Frontend will run on `http://localhost:3000`
+Frontend will run on `http://localhost:3000` (or next available port if 3000 is taken)
+
+**Note:** If port 3000 is in use, Vite will automatically use port 3001, 3002, etc. Check the terminal output for the actual port number.
 
 #### Terminal 3: Run Automation (when needed)
 ```bash
