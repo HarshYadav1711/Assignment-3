@@ -1,0 +1,36 @@
+.error-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+}
+
+.error-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.error-content {
+  flex: 1;
+}
+
+.error-title {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #991b1b;
+}
+
+.error-message {
+  margin-bottom: 0.75rem;
+  color: #7f1d1d;
+}
+
+.error-retry {
+  margin-top: 0.5rem;
+}
+

@@ -1,0 +1,135 @@
+.article-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.article-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+.article-card-original {
+  border-left: 4px solid #3b82f6;
+}
+
+.article-card-updated {
+  border-left: 4px solid #10b981;
+}
+
+.article-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.article-type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-original {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-updated {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.article-link-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.article-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-card-link:hover {
+  text-decoration: none;
+}
+
+.article-card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: #111827;
+}
+
+.article-card-link:hover .article-card-title {
+  color: #2563eb;
+}
+
+.article-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.article-card-date {
+  font-weight: 500;
+}
+
+.article-card-original-date {
+  font-size: 0.8125rem;
+}
+
+.article-card-preview {
+  color: #4b5563;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.article-card-references {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.article-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.article-card-button {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .article-card {
+    padding: 1rem;
+  }
+
+  .article-card-title {
+    font-size: 1.125rem;
+  }
+
+  .article-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
