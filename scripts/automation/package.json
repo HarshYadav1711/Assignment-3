@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "scrape": "node src/index.js scrape",
     "search": "node src/index.js search",
-    "extract": "node src/index.js extract"
+    "extract": "node src/index.js extract",
+    "update": "node src/index.js update"
   },
   "keywords": [
     "scraping",

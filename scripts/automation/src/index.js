@@ -7,6 +7,7 @@ import { scrapeOldestArticles } from './scrapers/blogScraper.js';
 import { extractArticleContent } from './scrapers/articleContentExtractor.js';
 import { searchForArticle, structureResultsForScraping } from './services/googleSearch.js';
 import { improveArticleWithLLM, getImprovementPrompt } from './services/llmService.js';
+import { processOldestArticles, processSingleArticleUpdate } from './processors/articleUpdateProcessor.js';
 import { logger } from './utils/logger.js';
 import { ScraperError, HttpError, ParseError } from './utils/errors.js';
 
@@ -90,9 +91,71 @@ async function main() {
         
         return extracted;
         
+      case 'update':
+        const apiUrl = process.env.API_URL || 'http://localhost:3001';
+        const articleIdArg = process.argv[3];
+        
+        if (articleIdArg) {
+          // Update single article by ID
+          const articleId = parseInt(articleIdArg, 10);
+          if (isNaN(articleId)) {
+            logger.error('Article ID must be a number');
+            logger.info('Usage: node src/index.js update <articleId>');
+            process.exit(1);
+          }
+          
+          logger.info(`Processing update for article ID: ${articleId}`);
+          const singleResult = await processSingleArticleUpdate({
+            articleId,
+            apiUrl,
+            options: {
+              skipIfExists: true
+            }
+          });
+          
+          logger.info(`\n=== Update Result ===`);
+          console.log(JSON.stringify(singleResult, null, 2));
+          
+          return singleResult;
+        } else {
+          // Process oldest articles
+          const articleCount = parseInt(process.argv[4] || '5', 10);
+          
+          logger.info('Processing oldest articles from BeyondChats...');
+          const pipelineResult = await processOldestArticles({
+            apiUrl,
+            articleCount,
+            skipIfExists: true
+          });
+          
+          logger.info(`\n=== Pipeline Results ===`);
+          console.log(`Total Processed: ${pipelineResult.total}`);
+          console.log(`Successful: ${pipelineResult.successful}`);
+          console.log(`Skipped: ${pipelineResult.skipped}`);
+          console.log(`Failed: ${pipelineResult.failed}`);
+          
+          if (pipelineResult.articles.length > 0) {
+            console.log(`\n=== Article Details ===`);
+            pipelineResult.articles.forEach((article, index) => {
+              console.log(`\n${index + 1}. ${article.originalTitle || 'Unknown'}`);
+              if (article.success) {
+                console.log(`   Status: ${article.skipped ? 'Skipped (already exists)' : 'Created'}`);
+                console.log(`   Original ID: ${article.originalArticleId}`);
+                console.log(`   Update ID: ${article.updateArticleId}`);
+                console.log(`   Reference URLs: ${article.referenceUrls?.length || 0}`);
+              } else {
+                console.log(`   Status: Failed`);
+                console.log(`   Error: ${article.error}`);
+              }
+            });
+          }
+          
+          return pipelineResult;
+        }
+        
       default:
         logger.warn(`Unknown command: ${command}`);
-        logger.info('Available commands: scrape, search, extract');
+        logger.info('Available commands: scrape, search, extract, update');
         process.exit(1);
     }
   } catch (error) {
@@ -121,4 +184,6 @@ export { scrapeOldestArticles };
 export { extractArticleContent } from './scrapers/articleContentExtractor.js';
 export { searchForArticle, structureResultsForScraping } from './services/googleSearch.js';
 export { improveArticleWithLLM, getImprovementPrompt } from './services/llmService.js';
+export { processOldestArticles, processSingleArticleUpdate } from './processors/articleUpdateProcessor.js';
+export { createApiClient } from './services/apiClient.js';
 
