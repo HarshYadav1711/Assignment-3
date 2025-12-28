@@ -6,6 +6,7 @@
 import { scrapeOldestArticles } from './scrapers/blogScraper.js';
 import { extractArticleContent } from './scrapers/articleContentExtractor.js';
 import { searchForArticle, structureResultsForScraping } from './services/googleSearch.js';
+import { improveArticleWithLLM, getImprovementPrompt } from './services/llmService.js';
 import { logger } from './utils/logger.js';
 import { ScraperError, HttpError, ParseError } from './utils/errors.js';
 
@@ -119,4 +120,5 @@ main().catch(error => {
 export { scrapeOldestArticles };
 export { extractArticleContent } from './scrapers/articleContentExtractor.js';
 export { searchForArticle, structureResultsForScraping } from './services/googleSearch.js';
+export { improveArticleWithLLM, getImprovementPrompt } from './services/llmService.js';
 

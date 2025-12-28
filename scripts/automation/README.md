@@ -48,6 +48,81 @@ GOOGLE_SEARCH_ENGINE_ID=your-search-engine-id
 
 See `src/services/README.md` for detailed documentation.
 
+## LLM Article Improvement Service
+
+The LLM service improves articles using AI while avoiding plagiarism and hallucination.
+
+### Features
+
+- **Content Assistant Approach**: Uses LLM as editor, not generator
+- **Anti-Plagiarism**: Explicit instructions to rewrite, not copy
+- **Anti-Hallucination**: Prevents invented citations and unsupported facts
+- **Reference Integration**: Uses reference articles as style guides only
+- **Multi-Provider Support**: Supports OpenAI and Anthropic APIs
+
+### Usage
+
+#### Programmatic
+
+```javascript
+import { improveArticleWithLLM } from './services/llmService.js';
+
+const result = await improveArticleWithLLM({
+  originalContent: "Original article text...",
+  originalTitle: "Article Title",
+  referenceArticles: [
+    { title: "Ref 1", content: "Reference content 1..." },
+    { title: "Ref 2", content: "Reference content 2..." }
+  ],
+  options: {
+    provider: 'openai', // or 'anthropic'
+    model: 'gpt-4-turbo-preview'
+  }
+});
+
+console.log(result.improvedContent);
+```
+
+### Configuration
+
+Set up LLM API credentials in `.env.local`:
+
+```env
+# For OpenAI
+OPENAI_API_KEY=your-openai-api-key
+
+# For Anthropic
+ANTHROPIC_API_KEY=your-anthropic-api-key
+
+# Provider preference (optional, defaults to openai)
+LLM_PROVIDER=openai
+```
+
+### Prompt Design
+
+The prompt is carefully designed to:
+- **Avoid Plagiarism**: Explicit "rewrite, not copy" instructions
+- **Prevent Hallucination**: No instruction to add citations or new facts
+- **Preserve Facts**: Focus on improvement, not addition
+- **Original Expression**: Mandates original language throughout
+
+See `src/services/LLM_PROMPT_DESIGN.md` for detailed explanation of the prompt design.
+
+### Output Format
+
+```javascript
+{
+  originalTitle: "Article Title",
+  originalContent: "Original content...",
+  improvedContent: "Improved content...",
+  originalLength: 5000,
+  improvedLength: 5500,
+  referenceCount: 2,
+  provider: "openai",
+  improvedAt: "2024-01-15T10:30:00.000Z"
+}
+```
+
 ## Article Content Extractor
 
 The article content extractor extracts clean, readable content from any blog/article URL.
