@@ -28,6 +28,23 @@ The platform maintains a clear separation between original and updated content, 
 - Monorepo structure
 - Environment-based configuration
 
+## Quick Start
+
+**TL;DR:** Run the API, then the frontend, then the automation pipeline.
+
+```bash
+# Terminal 1: Start API
+cd apps/api && npm install && npm start
+
+# Terminal 2: Start Frontend  
+cd apps/frontend && npm install && npm run dev
+
+# Terminal 3: Run Automation
+cd scripts/automation && npm install && npm run update
+```
+
+See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions.
+
 ## Local Setup
 
 ### Prerequisites
